@@ -4,9 +4,12 @@ Una guia para instalar el Servidor TFTP en ubuntu
 ## Indice
 > Versión de ubuntu: 18.04
 
-1. [Preparativos](#Preparativos).
-2. [Instalación y configuración](#Instalación-y-configuración-del-servidor-TFTP).
-3. [Comprobar que funciona](#Comprobar-que-funciona)
+- [TFTP-SERVER-CONFIG](#tftp-server-config)
+  - [Indice](#indice)
+    - [Preparativos](#preparativos)
+    - [Instalación y configuración del servidor TFTP](#instalaci%c3%b3n-y-configuraci%c3%b3n-del-servidor-tftp)
+      - [¿Pero para que le asignamose esos permisos y le ponemos ese propietario?](#%c2%bfpero-para-que-le-asignamose-esos-permisos-y-le-ponemos-ese-propietario)
+    - [Comprobar que funciona](#comprobar-que-funciona)
 
 ### Preparativos
 > Antes de comenzar he de decir que yo estoy realizando las instalaciones en una maquina virtual con Virtual Box en un entorno encapsulado donde las tarjeta van a funcionar en red interna, y solo en NAT cuando necesito instalar paquetes el ubuntu.
@@ -22,7 +25,7 @@ apt update && apt upgrade
 Una vez tenemos actualizados los respositorios, instalamos el servidor TFTP con el siguiente comando:
 
 ```bash
-apt install tftp-hpa
+apt install tftpd-hpa
 ```
 
 Cuando esté instalado para configurarlo nos vamos a su archivo de configuración se encuentra en la ruta **/etc/default/**, el nombre del archivo de configuración es **tftpd-hpa**, pero antes tocarlo le hacemos una copia de seguridad de la siguiente manera:
@@ -44,17 +47,11 @@ TFTP_ADDRESS=":69"
 TFTP_OPTIONS="--secure"
 ```
 
-Nosotros lo tenemos que dejar de la siguiente manera:
+> El tftp username, por lo que he comprobado es un usuario que utiliza tftp como por defecto, si quereis poner otro teneis que crear un usuario para que pueda funcionar
 
-```
-TFTP_USERNAME="nombreDeUsuario"
-TFTP_DIRECTORY="/var/lib/laRutaQueQuerais"
-TFTP_ADDRESS=":69"
-TFTP_OPTIONS="-s -c -l"
-```
 Explicación del archivo:
 
-- **TFTP_USERNAME:** como su nombre indica es para entrar al servidor con un usuario, ese usuario tiene que estar creado en el servidor, hay que usar por defecto el tftp.
+- **TFTP_USERNAME:** es el nombre de usuario por defecto que usará el servidor tftp, por defecto está el tftp, si quereis modificarlo cread un nuevo usuario.
 - **TFTP_DIRECTORY:** aquí se especifica la ruta donde se subirán los archivos y de está ruta tambien será de donde se descargarán(se puede modificar a la que querais, siempre y cuando hagais esto).
 - **TFTP_ADDRESS:** aquí se le puede especificar una dirección IP y un puerto en el que escuchar, por defecto viene con **:69** porque escucha en la dirección IP local y el puerto 69.
 
